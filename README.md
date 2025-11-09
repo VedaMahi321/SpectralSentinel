@@ -1,22 +1,85 @@
-This is a matlab code for MOBS-TD algorithm.
-MOBS-TD is a multiobjective optimization (MO) based BS method specifically designed for target detection. 
-It aims to select bands with better target separation and stronger robustness across various application scenes.
+# 🛰️ SpectralSentinel
+### *Defense-Oriented Hyperspectral Band Optimization and Camouflage Target Detection Framework*
 
-@ARTICLE{10533653,  
-  author={Sun, Xudong and Lin, Peng and Shang, Xiaodi and Pang, Huijuan and Fu, Xianping},  
-  journal={IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing},   
-  title={MOBS-TD: Multiobjective Band Selection With Ideal Solution Optimization Strategy for Hyperspectral Target Detection},   
-  year={2024},  
-  volume={17},  
-  number={},  
-  pages={10032-10050},  
-  keywords={Object detection;Optimization;Task analysis;Sociology;Redundancy;Hyperspectral imaging;Feature extraction;Band selection (BS);hyperspectral imagery;multiobjective optimization (MO);target detection},  
-  doi={10.1109/JSTARS.2024.3402381}  
-}  
+---
 
-Run the main.m to begin
+## 📖 Overview
 
-This code is ONLY released for academic use. Please do not further distribute the code (including the download link), 
-or put any of the code on the public website. 
+**SpectralSentinel** is a MATLAB-based defense research project focusing on **hyperspectral band optimization** for **camouflage and target detection**.  
+It integrates four major algorithms — **Fisher Criterion**, **Jeffries–Matusita (JM) Distance**, **Greedy Selection**, and **MOBS-TD (Multiobjective Band Selection for Target Detection)** — within an interactive MATLAB GUI called **Hyperspectral Control Room**.
 
-Please kindly cite our paper if you use our code in your research. Thanks and hope you will benefit from our code. 
+The framework enables defense researchers and engineers to visualize, compare, and analyze the separability, redundancy, and detection performance of hyperspectral bands.  
+It is a modular foundation for evolving toward **real-time, onboard spectral intelligence systems**.
+
+---
+
+## 🎯 Objectives
+
+- Implement classical and multiobjective optimization-based band selection algorithms for hyperspectral imaging (HSI).  
+- Provide a **graphical user interface (GUI)** for visualization, control, and export of results.  
+- Evaluate each algorithm’s performance using **AUC metrics**, heatmaps, and Pareto analysis.  
+- Develop a **defense-grade spectral analysis tool** capable of detecting camouflaged targets.  
+- Prepare the framework for **real-time deployment** on edge computing and UAV platforms.
+
+---
+
+## 🧠 Background
+
+### Hyperspectral Imaging in Defense
+Hyperspectral Imaging (HSI) captures hundreds of contiguous spectral bands for each pixel, allowing detection of subtle material differences — even under camouflage.  
+This spectral richness, however, causes:
+- Redundant information across adjacent bands.
+- Increased computational load.
+- Reduced real-time feasibility.
+
+Hence, **band optimization** is crucial for defense-oriented target detection systems — selecting only the most informative and uncorrelated bands.
+
+---
+
+## ⚙️ Implemented Algorithms
+
+| Algorithm | Description | Characteristics |
+|------------|--------------|----------------|
+| **Fisher Criterion** | Measures separability between target and background classes using mean and variance. | Fast, statistical baseline. |
+| **Jeffries–Matusita (JM) Distance** | Measures statistical divergence between class distributions. | Strong spectral separability metric. |
+| **Greedy Selection** | Iteratively selects bands maximizing incremental AUC improvement. | Slower but locally optimal. |
+| **MOBS-TD** | Multiobjective Band Selection (Entropy, Redundancy, Separability). Uses Pareto dominance and WSIS scoring. | Advanced optimization; high accuracy. |
+
+---
+
+## 🧩 MOBS-TD Framework
+
+### Multiobjective Formulation
+
+Each candidate band subset \( X \) is optimized with respect to three competing objectives:
+
+\[
+\max f_1(X) = Entropy(X), \quad \max f_2(X) = Separability(X), \quad \min f_3(X) = Redundancy(X)
+\]
+
+where:
+- **Entropy** measures the information content.
+- **Separability** quantifies target–background discrimination.
+- **Redundancy** penalizes correlated spectral bands.
+
+### Optimization Loop
+The algorithm evolves a population of band subsets using:
+- **Pareto dominance ranking**  
+- **WSIS (Weighted Solution Importance Score)**  
+- **MSR (Mean Spectral Response)** evaluation  
+- **Mutation and crossover** to maintain diversity.
+
+---
+
+## 🔄 Pseudocode (Simplified)
+
+```text
+Initialize population of random band subsets
+For each iteration:
+    For each subset:
+        Compute Entropy, Separability, and Redundancy
+        Update non-dominated Pareto repository
+    Perform mutation/crossover
+    Compute WSIS score for diversity control
+End
+Select final subset maximizing Mean Spectral Response (MSR)
