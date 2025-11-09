@@ -1,85 +1,78 @@
 # 🛰️ SpectralSentinel
-### *Defense-Oriented Hyperspectral Band Optimization and Camouflage Target Detection Framework*
+**Defense-Oriented Hyperspectral Band Optimization & Camouflage Target Detection**
 
 ---
 
-## 📖 Overview
+## 🧑‍🎓 Author & Academic Details
 
-**SpectralSentinel** is a MATLAB-based defense research project focusing on **hyperspectral band optimization** for **camouflage and target detection**.  
-It integrates four major algorithms — **Fisher Criterion**, **Jeffries–Matusita (JM) Distance**, **Greedy Selection**, and **MOBS-TD (Multiobjective Band Selection for Target Detection)** — within an interactive MATLAB GUI called **Hyperspectral Control Room**.
-
-The framework enables defense researchers and engineers to visualize, compare, and analyze the separability, redundancy, and detection performance of hyperspectral bands.  
-It is a modular foundation for evolving toward **real-time, onboard spectral intelligence systems**.
-
----
-
-## 🎯 Objectives
-
-- Implement classical and multiobjective optimization-based band selection algorithms for hyperspectral imaging (HSI).  
-- Provide a **graphical user interface (GUI)** for visualization, control, and export of results.  
-- Evaluate each algorithm’s performance using **AUC metrics**, heatmaps, and Pareto analysis.  
-- Develop a **defense-grade spectral analysis tool** capable of detecting camouflaged targets.  
-- Prepare the framework for **real-time deployment** on edge computing and UAV platforms.
+**Name:** Veda Prakash Mohanarangan  
+**Roll Number:** 22SP2031  
+**Programme:** M.Tech – Signal Processing and Machine Learning (SPML)  
+**Department:** Electronics and Communication Engineering (ECE)  
+**Institution:** National Institute of Technology Karnataka (NITK), Surathkal  
+**Course:** EC861 – Image Processing and Computer Vision  
+**Date:** November 2025
 
 ---
 
-## 🧠 Background
+## 🚀 Project Overview
 
-### Hyperspectral Imaging in Defense
-Hyperspectral Imaging (HSI) captures hundreds of contiguous spectral bands for each pixel, allowing detection of subtle material differences — even under camouflage.  
-This spectral richness, however, causes:
-- Redundant information across adjacent bands.
-- Increased computational load.
-- Reduced real-time feasibility.
+**SpectralSentinel** is a MATLAB-based research and development framework for **hyperspectral band optimization**, designed for defense applications such as **camouflage detection** and **target identification**. The project integrates four band-selection strategies into an interactive GUI (Hyperspectral Control Room):
 
-Hence, **band optimization** is crucial for defense-oriented target detection systems — selecting only the most informative and uncorrelated bands.
+- **Fisher Criterion** (statistical separability)  
+- **Jeffries–Matusita (JM) Distance** (class divergence)  
+- **Greedy Selection** (iterative AUC-driven selection)  
+- **MOBS-TD** (Multiobjective Band Selection for Target Detection — entropy, redundancy, separability)
 
----
-
-## ⚙️ Implemented Algorithms
-
-| Algorithm | Description | Characteristics |
-|------------|--------------|----------------|
-| **Fisher Criterion** | Measures separability between target and background classes using mean and variance. | Fast, statistical baseline. |
-| **Jeffries–Matusita (JM) Distance** | Measures statistical divergence between class distributions. | Strong spectral separability metric. |
-| **Greedy Selection** | Iteratively selects bands maximizing incremental AUC improvement. | Slower but locally optimal. |
-| **MOBS-TD** | Multiobjective Band Selection (Entropy, Redundancy, Separability). Uses Pareto dominance and WSIS scoring. | Advanced optimization; high accuracy. |
+The repository includes scripts to run experiments, generate detection heatmaps, band-score plots, Pareto fronts, and timestamped exports for reproducible reporting.
 
 ---
 
-## 🧩 MOBS-TD Framework
+## 🔍 Why this matters (Defense context)
 
-### Multiobjective Formulation
-
-Each candidate band subset \( X \) is optimized with respect to three competing objectives:
-
-\[
-\max f_1(X) = Entropy(X), \quad \max f_2(X) = Separability(X), \quad \min f_3(X) = Redundancy(X)
-\]
-
-where:
-- **Entropy** measures the information content.
-- **Separability** quantifies target–background discrimination.
-- **Redundancy** penalizes correlated spectral bands.
-
-### Optimization Loop
-The algorithm evolves a population of band subsets using:
-- **Pareto dominance ranking**  
-- **WSIS (Weighted Solution Importance Score)**  
-- **MSR (Mean Spectral Response)** evaluation  
-- **Mutation and crossover** to maintain diversity.
+HSI provides per-pixel spectral signatures across many bands. Camouflaged targets often evade RGB/visual sensors but can be distinguished spectrally. However, hundreds of bands mean redundancy, higher compute, and slower real-time performance. Band selection reduces dimensionality while preserving detection reliability — essential for UAVs, edge compute, and tactical systems.
 
 ---
 
-## 🔄 Pseudocode (Simplified)
+## ✨ Key Features
+
+- MATLAB GUI: **Hyperspectral Control Room** — set SNR/shift, select algorithm, run analysis  
+- Implements Fisher, JM, Greedy, and MOBS-TD methods  
+- Automatic exports: `heatmap`, `bands`, `pareto`, `figure_combined` images with timestamps  
+- Saves `.mat` results (`results_YYYYMMDD_HHMMSS.mat`, `last_result.mat`, `report_data.mat`) for reproducibility  
+- Code structured for easy extension to real-time or hardware acceleration
+
+---
+
+## 📐 Quick Math (high level)
+
+- **Fisher score** per band \(b\):
+  \[
+  J_b = \frac{(\mu_{1,b}-\mu_{2,b})^2}{\sigma_{1,b}^2 + \sigma_{2,b}^2}
+  \]
+
+- **JM Distance** (two-class):
+  \[
+  JM = 2(1 - e^{-B}),\quad B=\frac{1}{8}(\mu_1-\mu_2)^T\Sigma^{-1}(\mu_1-\mu_2)+\dots
+  \]
+
+- **MOBS-TD Objectives**:
+  \[
+  \max E(X),\quad \max S(X),\quad \min R(X)
+  \]
+  (Entropy, Separability, Redundancy)
+
+---
+
+## 🧾 Pseudocode (MOBS-TD summary)
 
 ```text
-Initialize population of random band subsets
-For each iteration:
-    For each subset:
-        Compute Entropy, Separability, and Redundancy
-        Update non-dominated Pareto repository
-    Perform mutation/crossover
-    Compute WSIS score for diversity control
+Initialize population of candidate band subsets
+For iteration = 1..MaxIter:
+    For each candidate:
+        Compute Entropy, Separability, Redundancy
+        Update Pareto repository (non-dominated solutions)
+    Apply grid-based ranking (WSIS) to preserve diversity
+    Select leaders and update candidate positions (PSO-like + mutate/crossover)
 End
-Select final subset maximizing Mean Spectral Response (MSR)
+Compute MSR for repository; select final subset(s)
