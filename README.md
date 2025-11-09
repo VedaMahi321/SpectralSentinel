@@ -1,9 +1,9 @@
 # 🛰️ SpectralSentinel
-**Defense-Oriented Hyperspectral Band Optimization & Camouflage Target Detection**
+### *Defense-Oriented Hyperspectral Band Optimization and Camouflage Target Detection Framework*
 
 ---
 
-## 🧑‍🎓 Author & Academic Details
+## 🧑‍🎓 Author and Academic Details
 
 **Name:** Veda Prakash Mohanarangan  
 **Roll Number:** 22SP2031  
@@ -11,68 +11,77 @@
 **Department:** Electronics and Communication Engineering (ECE)  
 **Institution:** National Institute of Technology Karnataka (NITK), Surathkal  
 **Course:** EC861 – Image Processing and Computer Vision  
-**Date:** November 2025
+**Guide:** Prof. Amareswararao Kavuri  
+**Date:** November 2025  
 
 ---
 
-## 🚀 Project Overview
+## 📘 Overview
 
-**SpectralSentinel** is a MATLAB-based research and development framework for **hyperspectral band optimization**, designed for defense applications such as **camouflage detection** and **target identification**. The project integrates four band-selection strategies into an interactive GUI (Hyperspectral Control Room):
+**SpectralSentinel** is a MATLAB-based research and visualization framework for **hyperspectral band optimization** focused on **defense applications** — especially **camouflage and target detection**.  
 
-- **Fisher Criterion** (statistical separability)  
-- **Jeffries–Matusita (JM) Distance** (class divergence)  
-- **Greedy Selection** (iterative AUC-driven selection)  
-- **MOBS-TD** (Multiobjective Band Selection for Target Detection — entropy, redundancy, separability)
+It integrates four major algorithms into a single interactive GUI, the **Hyperspectral Control Room**:
+- Fisher Criterion  
+- Jeffries–Matusita (JM) Distance  
+- Greedy Band Selection  
+- MOBS-TD (Multiobjective Band Selection for Target Detection)
 
-The repository includes scripts to run experiments, generate detection heatmaps, band-score plots, Pareto fronts, and timestamped exports for reproducible reporting.
-
----
-
-## 🔍 Why this matters (Defense context)
-
-HSI provides per-pixel spectral signatures across many bands. Camouflaged targets often evade RGB/visual sensors but can be distinguished spectrally. However, hundreds of bands mean redundancy, higher compute, and slower real-time performance. Band selection reduces dimensionality while preserving detection reliability — essential for UAVs, edge compute, and tactical systems.
+The system helps analyze spectral separability, redundancy, and detection performance through dynamic visualization and automatic report export.
 
 ---
 
-## ✨ Key Features
+## 🧭 Motivation
 
-- MATLAB GUI: **Hyperspectral Control Room** — set SNR/shift, select algorithm, run analysis  
-- Implements Fisher, JM, Greedy, and MOBS-TD methods  
-- Automatic exports: `heatmap`, `bands`, `pareto`, `figure_combined` images with timestamps  
-- Saves `.mat` results (`results_YYYYMMDD_HHMMSS.mat`, `last_result.mat`, `report_data.mat`) for reproducibility  
-- Code structured for easy extension to real-time or hardware acceleration
+Traditional RGB or multispectral systems fail under camouflage conditions.  
+Hyperspectral imaging captures rich spectral signatures, but large numbers of bands cause redundancy, noise, and computational delay.  
 
----
-
-## 📐 Quick Math (high level)
-
-- **Fisher score** per band \(b\):
-  \[
-  J_b = \frac{(\mu_{1,b}-\mu_{2,b})^2}{\sigma_{1,b}^2 + \sigma_{2,b}^2}
-  \]
-
-- **JM Distance** (two-class):
-  \[
-  JM = 2(1 - e^{-B}),\quad B=\frac{1}{8}(\mu_1-\mu_2)^T\Sigma^{-1}(\mu_1-\mu_2)+\dots
-  \]
-
-- **MOBS-TD Objectives**:
-  \[
-  \max E(X),\quad \max S(X),\quad \min R(X)
-  \]
-  (Entropy, Separability, Redundancy)
+SpectralSentinel addresses this by:
+- Selecting the most informative spectral bands.  
+- Reducing redundancy while maximizing class separability.  
+- Enabling faster, more reliable detection suitable for **defense-grade real-time analysis**.
 
 ---
 
-## 🧾 Pseudocode (MOBS-TD summary)
+## ⚙️ Key Features
 
-```text
-Initialize population of candidate band subsets
-For iteration = 1..MaxIter:
-    For each candidate:
-        Compute Entropy, Separability, Redundancy
-        Update Pareto repository (non-dominated solutions)
-    Apply grid-based ranking (WSIS) to preserve diversity
-    Select leaders and update candidate positions (PSO-like + mutate/crossover)
-End
-Compute MSR for repository; select final subset(s)
+- MATLAB GUI: **Hyperspectral Control Room**
+- Supports four band-selection algorithms (Fisher, JM, Greedy, MOBS-TD)
+- Adjustable sliders for:
+  - SNR (5–40 dB)
+  - Spectral Shift (-0.2 to 0.2)
+  - Band Count (`k`)
+  - Pre-selection count (`m`)
+- Real-time progress logs during algorithm execution
+- Automatic export of figures and `.mat` files for reproducibility
+- Timestamped result storage (e.g., `results_2025-11-08_213419.mat`)
+- Compatible with MATLAB R2021b or newer
+
+---
+
+## 🖥️ Graphical User Interface (GUI)
+
+The GUI allows users to configure algorithm parameters, run analyses, and visualize results.
+
+### 🧩 Interface Overview
+<p align="center">
+  <img src="MOBS-TD-(MATLAB)_20251108_213419_ui-snapshot.png" width="90%" alt="Hyperspectral Control Room GUI"/>
+</p>
+
+### 🔹 Components:
+1. **Algorithm Selector** — Choose Fisher, JM, Greedy, or MOBS-TD.  
+2. **Sliders** — Adjust SNR and spectral shift.  
+3. **Inputs** — Enter total bands (B), selection size (k), and preselect size (m).  
+4. **Run Analysis** — Executes selected algorithm and logs progress.  
+5. **Heatmap Panel** — Displays target detection intensity.  
+6. **Band Scores Panel** — Shows importance ranking of spectral bands.  
+7. **Pareto Front Plot** — Plots separability vs redundancy trade-offs.  
+8. **Log Console** — Displays runtime events and algorithm status.
+
+---
+
+## ▶️ How to Run
+
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/VedaPrakashM/SpectralSentinel.git
+cd SpectralSentinel
