@@ -35,7 +35,7 @@
 
 | **Name**        | Veda Prakash Mohanarangan                                    |
 | --------------- | ------------------------------------------------------------ |
-| **Roll Number** | 22SP2031                                                     |
+| **Roll Number** | 252SP031                                                     |
 | **Programme**   | M.Tech – Signal Processing and Machine Learning (SPML)       |
 | **Department**  | Electronics and Communication Engineering (ECE)              |
 | **Institution** | National Institute of Technology Karnataka (NITK), Surathkal |
